@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="author" content="Juan Pablo Roldan">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="icon" href="./cube_image.png">    
+    <style>@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');</style>    
+    <title>Terminales SES</title>
+  </head>
+  <body>
+    <!-- TABLA CON TODOS LOS SITIOS DESPLEGADOS -->
+    <section class="table_section" >
+      <div class="container">
+        <div class="table_header">
+          <h2 id="recharge" class="recharge">Lista de Terminales SES</h2>    
+        </div>
+        <div class="tools_terminales">
+          <!-- Boton para crear nueva terminal modal "modal_display_create_new_terminal" -->
+          <button id="crearTerminal">Nuevo Registro</button>        
+            <div class="input_search">
+              <input id="input_search_contrato" type="search" placeholder="contrato" />
+            </div>
+            <div class="input_search">
+              <input id="input_search_serieModem" type="search" placeholder="serieModem" />
+            </div>
+            <div class="input_search">
+              <input id="input_search_trafficEth0" type="search" placeholder="trafficEth0" />
+            </div>
+            <select class="search_menu" name="" id="optionSearch">
+              <option value="idproyecto" selected>proyecto</option>
+              <option value="beam">beam</option>
+              <option value="siteID">siteID</option>
+            </select>
+            <div  class="input_search">
+              <input id="input_search_generic" type="search" placeholder="Buscar" />
+            </div>
+            <div>
+              <button id="crearXlsx">Crear XLSX de Vista actual</button>
+            </div>            
+        </div>          
+        <div class="lista_terminales">
+          <table class="table_contenedor">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th> contrato </th>
+                <th> estatus </th>
+                <th> nombre remota </th>
+                <th> proyecto </th>
+                <th> service plan </th>
+                <th> serieModem </th>
+                <th> beam </th>
+                <th> latitud </th>
+                <th> longitud </th>
+                <th> trafficEth0 </th>
+                <th> siteID </th>
+                <th></th>
+              </tr>               
+            </thead>                        
+            <tbody id="tabla_informacion_terminales" class="tabla_informacion_terminales">
+            <!-- información de tablas creadas --> 
+              <!--loading-->                                        
+            </tbody>            
+          </table>          
+        </div>    
+        <div class="table_fotter">
+          <p id="footer_table_general_info">información terminales ses15</p>
+        </div>
+      </div>
+    </section>
+    <!-- ANIMACIÓN DE CARGA -->
+    <div id="relleno" class="relleno" style="display: block;">
+      <div class="relleno_div">
+        <div class="contenedorBarras">
+          <div class="bar bar1"></div>
+          <div class="bar bar2"></div>
+          <div class="bar bar3"></div>
+          <div class="bar bar4"></div>
+          <div class="bar bar5"></div>
+          <div class="bar bar6"></div>
+          <div class="bar bar7"></div>
+          <div class="bar bar8"></div>
+          <div class="bar bar9"></div>
+        </div>
+      </div>
+    </div>  
+    <!-- MODAL PARA MODIFICAR/DESPLEGAR INFORMACIÓN DE UN SITIO -->
+    <section class="modal_display_info">
+      <div id="myModal" class="modalContainer">
+        <div class="modal-content">
+          <span class="close"><i class="bi bi-x-circle"></i></span> <h2>Información de la Terminal</h2>
+          <div id="informacion_principal_terminal">
+            <!-- información de DVIS creados -->          
+          </div> 
+          <div class="modificar_borrar_terminal">
+            <div class="modificar_menu_div">
+              <b>Modificar Info Terminal</b>
+              <select class="modificar_menu" name="" id="modificarMenu">
+                <option value="ServicePlan" selected>Cambiar ServicePlan</option>
+                <option value="PMOC">Cambiar/Ingresar datos PMOC</option>
+                <option value="IP">Cambiar IP</option>
+                <option value="Eliminar">Eliminar Terminal</option>
+              </select>
+            </div>        
+            <div class="inputs_terminal_data">
+              <div id="ServicePlanInput" class="ServicePlan_input">
+                <select class="search_servicePlan" name="" id="searchServicePlan">
+                  <option value="gen x/x" selected>gen x/x</option>
+                  <option value="gen x/x">gen x/x</option>
+                  <option value="gen x/x">gen x/x</option>
+                </select>
+                <div id="Ips" class="Ips" style="display: none">
+                  <!-- domCreatorModificarIPs -->
+                  <input type="text" placeholder="generico" pattern="[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}">
+                  <input type="text" placeholder="generico" pattern="[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}">
+                  <input type="text" placeholder="generico" pattern="[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}">
+                  <input type="text" placeholder="generico" pattern="[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}[.]{1}[0-9]{3}">
+                </div>
+                <div id="InfoPMOC" class="Info_PMOC" style="display: none">
+                  <input id="siteID" type="text" placeholder="antenna code" pattern="[a-zA-Z]{0,3}[-]{0,1}[a-zA-Z]{0,3}[-]{0,1}[0-9]{0,5}[a-zA-Z]{0,1}" title="AAA-AAA-00000A">
+                  <input id="confirmationCode" type="text" placeholder="confirmationCode" pattern="[0-9]{0,7}" title="xxxxxxx SOLO NUMEROS">
+                  <input id="maxPowerdBm" type="text" placeholder="maxPowerdBm" pattern="[-]{1}[0-9]{0,5}" title="-xxxxx SOLO NUMEROS">
+                  <input id="p1dBdBm" type="text" placeholder="p1dBdBm" pattern="[-]{1}[0-9]{0,5}" title="-xxxxx SOLO NUMEROS">
+                  <input id="xPol" type="text" placeholder="xPol" pattern="[-]{1}[0-9]{0,5}" title="-xxxxx SOLO NUMEROS">
+                  <input id="powerFootroom" type="text" placeholder="powerFootroom" pattern="[-]{1}[0-9]{0,5}" title="-xxxxx SOLO NUMEROS">
+                  <input id="powerHeadroom" type="text" placeholder="powerHeadroom" pattern="[-]{1}[0-9]{0,5}" title="-xxxxx SOLO NUMEROS">
+                  <label for="fechaActivacion">fechaActivacion</label>
+                  <input id="fechaActivacion" type="date" placeholder="fecha activación">
+                </div>
+                <button id="aplicarCambios" style="display: block">Aplicar Cambios</button>
+                <button id="eliminarTerminal" style="display: none;" class="eliminar"><i class="bi bi-trash3"></i>  Eliminar Terminal</button>
+                <p id="eliminarTerminalMensaje" style="display: none; font-size: 15px;" class="eliminar_mensaje"></p>
+              </div> 
+            </div>
+          </div>      
+        </div>
+      </div> 
+    </section>
+    <!-- MODAL PARA CREAR NUEVA TERMINAL -->
+    <section class="modal_display_create_new_terminal">
+      <div id="modalCreacionTerminal" class="modal_creacion_terminal">
+        <div class="modal_content_creacion">
+          <span id="closeCreacion" class="closeCreacion"><i class="bi bi-x-circle"></i></span> <h2>Formulario Nueva Terminal</h2>
+          <div>
+            <div class="div_input_create">
+                <div>
+                  <p>Proyecto</p>
+                  <select class="create_selector" name="" id="createProyecto">
+                    <option value="ELEKTRA" selected>ELEKTRA</option>
+                    <option value="OXXO">OXXO</option>
+                    <option value="BANORTE">BANORTE</option>
+                  </select>
+                </div>
+                <div>
+                  <p>contrato</p>
+                    <input id="contratoCreate" type="text" placeholder="contrato" value="" required pattern="[0-9]{1,4}[-]{1}[0-9]{1,4}" title="xxxx-xxxx">
+                </div>
+                <div>
+                  <p>operador</p>
+                  <select class="create_selector" name="" id="operadorCreate">
+                    <option value="generico" selected>generico</option>
+                    <option value="generico0">generico</option>
+                    <option value="generico">generico</option>
+                  </select>
+                </div> 
+                <div>
+                  <p>serieModem</p>
+                    <input id="serieModemCreate" type="text" placeholder="serieModem" value="" required pattern="[0-9]{1,9}" title="SOLO NÚMEROS">
+                </div>       
+            </div>
+            <div class="div_input_create"> 
+                <div>
+                  <p>Plan de Servicio</p>
+                  <select class="create_selector" name="" id="createServicePlan">
+                    <option value="Plan 5/10" selected>Plan 5/10</option>
+                    <option value="plan 20/20">plan 20/20</option>
+                    <option value="plan 3/1">plan 3/1</option>
+                  </select>
+                </div>             
+                <div>
+                    <p>Beam</p>
+                  <select class="create_selector" name="" id="createBeam">
+                    <option value="45" selected>45</option>
+                    <option value="36">36</option>
+                    <option value="47">47</option>
+                  </select>
+                </div>
+                <div>
+                  <p>latitud</p>
+                    <input id="latitudCreate" type="text" placeholder="latitud" value="" required pattern="[0-8]{0,1}[0-9]{1}[.]{1}[0-9]{3,6}" title="XX.XXXXXX">
+                </div>  
+                <div>
+                  <p>longitud</p>
+                    <input id="longitudCreate" type="text" placeholder="longitud" value=""required pattern="[-]{1}[1]{0,1}[0-9]{0,1}[0-9]{1}[.]{1}[0-9]{3,6}" title="-XXX.XXXXXX">
+                </div>                    
+            </div>            
+            <div class="div_input_create">              
+              <div>
+                <p>adminSat0</p>
+                  <input id="adminSat0Create" type="text" placeholder="adminSat0" value="" required pattern="[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}" title="xxx.xxx.xxx.xxx">
+              </div>  
+              <div>
+                <p>trafficSat0</p>
+                  <input id="trafficSat0Create" type="text" placeholder="trafficSat0" value="" required pattern="[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}" title="xxx.xxx.xxx.xxx">
+              </div> 
+              <div>
+                <p>trafficSubnet</p>
+                  <input id="trafficSubnetCreate" type="text" placeholder="trafficSubnet" value="" required pattern="[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}" title="xxx.xxx.xxx.xxx">
+              </div>
+            </div>
+            <div class="div_input_create">              
+              <div>
+                <p>trafficEth0</p>
+                  <input id="trafficEth0Create" type="text" placeholder="trafficEth0" value="" required pattern="[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}" title="xxx.xxx.xxx.xxx">
+              </div>  
+              <div>
+                <p>trafficDHCP</p>
+                  <input id="trafficDHCPCreate" type="text" placeholder="trafficDHCP" value="" required pattern="[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[-]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}" title="xxx.xxx.xxx.xxx-xxx.xxx.xxx.xxx">
+              </div> 
+              <div>
+                <p>trafficBroadcast</p>
+                  <input id="trafficBroadcastCreate" type="text" placeholder="trafficBroadcast" value="" required pattern="[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}[.]{1}[0-9]{1,3}" title="xxx.xxx.xxx.xxx">
+              </div>  
+            </div>
+            <div class="div_input_create">
+              <button id="crearNuevaTerminal" style="display: block;"><i class="bi bi-upload"></i> Crear Terminal</button>
+            </div>
+          <b>Creacion de Nueva Terminal</b>
+          <P id="infoRepetido" style="font-size: 15px;display:none;color: red"></P>
+          <p id="mensajeCreacion" style="font-size: 15px;"></p>
+        </div>
+      </div>
+    </section>   
+    <section class="footer_bootstrap">
+        <!-- footer -->
+      <div class="footer_div">
+        <footer class="global">          
+            <p>Registro y Consulta de Terminales SES</p>  
+            <p style="color: rgb(172, 172, 172);font-size: smaller;font-style: italic;">creado por Juan Pablo Roldan</p>          
+        </footer>
+      </div>
+      <!-- bootstrap -->
+      <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
+      />
+    </section>     
+    <!-- scrips -->
+    <script src="./node_modules/axios/dist/axios.min.js"></script>
+    <script src="./node_modules/xlsx/xlsx.js"></script>
+    <script src="./src/nodes.js"></script>
+    <script src="./src/main.js"></script>
+    <script src="./src/xlxs/createXlsx.js"></script>
+  </body>
+</html>
